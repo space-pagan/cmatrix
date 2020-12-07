@@ -21,7 +21,7 @@ AC_PROG_MAKE_SET
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lncurses:
-AC_CHECK_LIB(ncurses, main)
+AC_CHECK_LIB(ncursesw, main)
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -35,7 +35,7 @@ dnl Checks for libraries.
 AC_CHECK_HEADERS(curses.h ncurses.h)
 
 CURSES_LIB_NAME=""
-AC_CHECK_LIB(ncurses, tgetent, CURSES_LIB="-lncurses" CURSES_LIB_NAME=ncurses)
+AC_CHECK_LIB(ncursesw, tgetent, CURSES_LIB="-lncursesw" CURSES_LIB_NAME=ncursesw)
 
 if eval "test x$CURSES_LIB_NAME = x"
 then

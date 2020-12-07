@@ -46,6 +46,8 @@
 #endif
 
 #ifdef HAVE_NCURSES_H
+#define _XOPEN_SOURCE_EXTENDED 1
+#define NCURSES_WIDECHAR 1
 #include <ncurses.h>
 #else
 #include <curses.h>
@@ -509,8 +511,8 @@ if (console) {
     /* Set up values for random number generation */
     if(classic) {
         /* Japanese character unicode range [they are seen in the original cmatrix] */
-        randmin = 12288;
-        highnum = 12351;
+        randmin = 0xff66;
+        highnum = 0xff9d;
     } else if (console || xwindow) {
         randmin = 166;
         highnum = 217;
@@ -644,33 +646,40 @@ if (console) {
 
                 /* I dont like old-style scrolling, yuck */
                 if (oldstyle) {
+                    // move row down
                     for (i = LINES - 1; i >= 1; i--) {
                         matrix[i][j].val = matrix[i - 1][j].val;
                     }
                     random = (int) rand() % (randnum + 8) + randmin;
 
                     if (matrix[1][j].val == 0) {
+                        // previous row had a white head leading this column
+                        // unset it
                         matrix[0][j].val = 1;
-                    } else if (matrix[1][j].val == ' '
-                             || matrix[1][j].val == -1) {
+                    } else if (matrix[1][j].val == ' ' || matrix[1][j].val == -1) {
+                        // generate a gap amount and wait that long between columns
                         if (spaces[j] > 0) {
+                            // still in gap
                             matrix[0][j].val = ' ';
                             spaces[j]--;
                         } else {
-
-                            /* Random number to determine whether head of next collumn
-                               of chars has a white 'head' on it. */
+                            // no longer in gap, generate new random
 
                             if (((int) rand() % 3) == 1) {
+                                // will have white head
                                 matrix[0][j].val = 0;
                             } else {
+                                // the random char
                                 matrix[0][j].val = (int) rand() % randnum + randmin;
                             }
+                            // generate new random gap
                             spaces[j] = (int) rand() % LINES + 1;
                         }
                     } else if (random > highnum && matrix[1][j].val != 1) {
+                        // random position to end column
                         matrix[0][j].val = ' ';
                     } else {
+                        // above head and before gap, generate new random char
                         matrix[0][j].val = (int) rand() % randnum + randmin;
                     }
 
@@ -759,10 +768,12 @@ if (console) {
                         if (console || xwindow) {
                             addch(183);
                         } else {
-                            addch('&');
+                            addwstr(L"& ");
                         }
                     } else {
-                        addch(matrix[i][j].val);
+                        cchar_t wc = { A_NORMAL };
+                        wc.chars[0] = matrix[i][j].val;
+                        add_wch(&wc);
                     }
 
                     attroff(COLOR_PAIR(COLOR_WHITE));
@@ -802,7 +813,7 @@ if (console) {
                         if (bold) {
                             attron(A_BOLD);
                         }
-                        addch('|');
+                        addwstr(L"| ");
                         if (bold) {
                             attroff(A_BOLD);
                         }
@@ -815,11 +826,13 @@ if (console) {
                             attron(A_BOLD);
                         }
                         if (matrix[i][j].val == -1) {
-                            addch(' ');
+                            addwstr(L"  ");
                         } else if (lambda && matrix[i][j].val != ' ') {
-                            addstr("λ");
+                            addwstr(L"λ ");
                         } else {
-                            addch(matrix[i][j].val);
+                            cchar_t wc = { A_NORMAL };
+                            wc.chars[0] = matrix[i][j].val;
+                            add_wch(&wc);
                         }
                         if (bold == 2 ||
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
