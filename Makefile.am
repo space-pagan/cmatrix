@@ -15,11 +15,11 @@ EXTRA_DIST =	COPYING INSTALL install-sh \
 
 install-data-local:
 	@if test $(BUILD_FONTS) = 1; then \
-		if test -d /usr/share/consolefonts; then \
-	    		echo " Installing matrix fonts in /usr/share/consolefonts..."; \
-	    		mkdir -p $(DESTDIR)/usr/share/consolefonts; \
-	    		$(INSTALL_DATA) $(srcdir)/matrix.fnt $(DESTDIR)/usr/share/consolefonts; \
-	    		$(INSTALL_DATA) $(srcdir)/matrix.psf.gz  $(DESTDIR)/usr/share/consolefonts; \
+		if test -d /usr/share/kbd/consolefonts; then \
+	    		echo " Installing matrix fonts in /usr/share/kbd/consolefonts..."; \
+	    		mkdir -p $(DESTDIR)/usr/share/kbd/consolefonts; \
+	    		$(INSTALL_DATA) $(srcdir)/matrix.fnt $(DESTDIR)/usr/share/kbd/consolefonts; \
+	    		$(INSTALL_DATA) $(srcdir)/matrix.psf.gz  $(DESTDIR)/usr/share/kbd/consolefonts; \
 		fi; \
 		if test -d /usr/lib/kbd/consolefonts; then \
 	    		echo " Installing matrix fonts in /usr/lib/kbd/consolefonts..."; \

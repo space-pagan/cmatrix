@@ -110,14 +110,14 @@ if test "x$enable_fonts" != xfalse; then
        if test x$SETFONT != x -o x$SETFONT != x'"$SETFONT"'; then
 
 	  dnl Now look for the console fonts directory
-	  AC_CHECK_FILES([/usr/lib/kbd/consolefonts /usr/share/consolefonts])
+	  AC_CHECK_FILES([/usr/lib/kbd/consolefonts /usr/share/kbd/consolefonts])
 
 	  if test "x$ac_cv_file__usr_lib_kbd_consolefonts" = "xno"; then
-	      if test "x$ac_cv_file__usr_share_consolefonts" = "xno"; then
+	      if test "x$ac_cv_file__usr_share_kbd_consolefonts" = "xno"; then
 		  AC_MSG_WARN([ 
 
 *** You do not appear to have a consolefonts directory in a standard location
-*** (/usr/lib/kbd or /usr/share), even though you appear to have the
+*** (/usr/lib/kbd or /usr/share/kbd), even though you appear to have the
 *** consolechars and/or setfont command.  The matrix font for the console
 *** will not be installed.  This means you will not be able to use the
 *** matrix console font (and the -l command line switch) unless the font

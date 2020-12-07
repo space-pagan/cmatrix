@@ -213,12 +213,12 @@ void var_init() {
 
     /* Make the matrix */
     for (i = 0; i <= LINES; i++) {
-        for (j = 0; j <= COLS - 1; j += 2) {
+        for (j = 0; j <= COLS - 1; j += 1) {
             matrix[i][j].val = -1;
         }
     }
 
-    for (j = 0; j <= COLS - 1; j += 2) {
+    for (j = 0; j <= COLS - 1; j += 1) {
         /* Set up spaces[] array of how many spaces to skip */
         spaces[j] = (int) rand() % LINES + 1;
 
@@ -641,7 +641,7 @@ if (console) {
                 }
             }
         }
-        for (j = 0; j <= COLS - 1; j += 2) {
+        for (j = 0; j <= COLS - 1; j += 1) {
             if ((count > updates[j] || asynch == 0) && pause == 0) {
 
                 /* I dont like old-style scrolling, yuck */
