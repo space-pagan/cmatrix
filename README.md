@@ -56,11 +56,11 @@ _Note: cmatrix is probably not particularly portable or efficient, but it wont h
 
 #### Screenshots
 
-![Special Font & bold](data/img/capture_bold_font.png?raw=true "cmatrix -bx")
+![Special Font & bold](data/img/capture_abc.png?raw=true "cmatrix -abc")
 
 #### Screencasts
 
-![Movie-Like Cast](data/img/capture_orig.gif?raw=true "cmatrix -xba")
+![Movie-Like Cast](data/img/capture_abc.gif?raw=true "cmatrix -abc")
 
 ### Maintainers
 - Abishek V Ashok (@abishekvashok) <abishekvashok@gmail.com> [Core]
