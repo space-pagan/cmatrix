@@ -12,17 +12,22 @@ Packager: abishekvashok@gmail.com
 URL: https://github.com/abishekvashok/cmatrix
 Source0: https://github.com/abishekvashok/cmatrix/archive/%{ver}.tar.gz
 Provides: none
-Requires: ncurses
+Requires: ncursesw
 Conflicts: none
 BuildRoot: /var/tmp/%{name}-buildroot
+
 %Description
-CMatrix is based on the screensaver from The Matrix website. It can scroll
-lines all at the same rate or asynchronously and at a user-defined speed.
+CMatrix shows a scrolling 'Matrix' like screen in the Linux terminal, with
+various user-customizable options.
+
 %Prep
+
 %setup
+
 %Build
 ./configure --prefix=/usr --mandir=/usr/share/man
 make
+
 %Install
 rm -rf $RPM_BUILD_ROOT
 make DESTDIR="$RPM_BUILD_ROOT" install
@@ -33,8 +38,10 @@ install matrix.fnt $RPM_BUILD_ROOT/usr/lib/kbd/consolefonts
 install matrix.psf.gz $RPM_BUILD_ROOT/usr/lib/kbd/consolefonts
 install mtx.pcf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/misc
 mkfontdir $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/misc
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
 %files
 %defattr(-,root,root)
 %doc COPYING INSTALL README.md
