@@ -1,82 +1,114 @@
-.TH CMatrix 1 "Mon May 3 1999"
+.TH CMatrix 1 "Tue Dec 8 2020"
 .SH NAME
 CMatrix
 .SH SYNOPSIS
 .B cmatrix
-[\-abBflohnsmVx] [\-u update] [\-C color]
+[FLAGS] [OPTIONS]
 .SH DESCRIPTION
 Shows a scrolling 'Matrix' like screen in Linux
-.SS OPTIONS
+.SS FLAGS
 .TP
-.I "\-a"
+.B "\-a"
 Asynchronous scroll
 .TP
-.I "\-b"
+.B "\-b"
 Bold characters on
 .TP
-.I "\-B"
+.B "\-B"
 All bold characters (overrides \-b)
 .TP
-.I "\-f"
+.B "\-c"
+Use Japanese characters as seen in the original matrix. Requires appropriate fonts
+.TP
+.B "\-f"
 Force the linux $TERM type to be on
 .TP
-.I "\-l"
-Linux mode (sets "matrix.fnt" font in console)
-.TP
-.I "\-o"
-Use old-style scrolling
-.TP
-.I "\-h, \-?"
+.B "\-h, \-?"
 Print usage and exit
 .TP
-.I "\-n"
-No bold characters (overrides \-b and \-B)
+.B "\-k"
+Characters in each stream can randomly change (only without \-o)
 .TP
-.I "\-s"
-"Screensaver" mode, exits on first keystroke
+.B "\-l"
+Use matrix console font (TTY ONLY!)
 .TP
-.I "\-m"
+.B "\-L"
+Lock mode (must be closed from another terminal)
+.TP
+.B "\-m"
 "Lambda" mode, every character becomes a lambda
 .TP
-.I "\-x"
-X window mode, use if your xterm is using mtx.pcf
+.B "\-n"
+No bold characters (overrides \-b and \-B, default behaviour)
 .TP
-.I "\-V"
+.B "\-o"
+Use old-style scrolling
+.TP
+.B "\-r"
+Rainbow mode
+.TP
+.B "\-s"
+"Screensaver" mode, exits on first keystroke
+.TP
+.B "\-v"
 Print version information and exit
 .TP
-.I "\-u delay"
-Screen update delay 0 - 9, default 4
+.B "\-x"
+X window mode, use if your xterm is using mtx.pcf
+.SS OPTIONS
 .TP
-.I "\-C color"
+.B "\-C color"
 Use this color for matrix (default green). 
 Valid colors are green, red, blue, white, yellow, cyan, magenta and black.
-.I "\-t tty"
+.TP
+.B "\-M message"
+Prints your message in the center of the screen. Overrides \-L's default message
+.TP
+.B "\-t tty"
 Set tty to use
-.SS KEYSTROKES
+.TP
+.B "\-u delay"
+Screen update delay 0 - 9, default 4
+.SS USAGE
 The following keystrokes are available during execution (unavailable in
 \-s mode)
 .TP
-.I "a"
+.B "a"
 Toggle asynchronous scroll
 .TP
-.I "b"
+.B "b"
 Random bold characters
 .TP
-.I "B"
+.B "B"
 All bold characters
 .TP
-.I "n"
+.B "n"
 Turn off bold characters
 .TP
-.I "0\-9"
+.B "0\-9"
 Adjust update speed
 .TP
-.I "! @ # $ % ^ & )"
 Change the color of the matrix to the corresponding color:
-! \- red, @ \- green, # \- yellow, $ \- blue, % \- magenta, ^ \- cyan,
-& \- white, ) \- black.
+.RS
+.IP "!"
+red
+.IP "@"
+green
+.IP "#"
+yellow
+.IP "$"
+blue
+.IP "%"
+magenta
+.IP "^"
+cyan
+.IP "&"
+white
+.IP ")"
+black
+.RE
 .TP
-.I "q"
+.B "q"
 Quit the program
 .SH BUGS
 This program is very CPU intensive.  Don't be surprised if it eats up over

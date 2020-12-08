@@ -9,7 +9,7 @@ else
 BUILD_FONTS = 0
 endif
 
-EXTRA_DIST =	COPYING INSTALL install-sh \
+EXTRA_DIST =	LICENSE INSTALL install-sh \
 		missing mkinstalldirs matrix.fnt \
 		matrix.psf.gz mtx.pcf cmatrix.1 cmatrix.spec
 

@@ -78,9 +78,9 @@ int console = 0;
 int xwindow = 0;
 int lock = 0;
 cmatrix **matrix = (cmatrix **) NULL;
-int *length = NULL;  /* Length of cols in each line */
-int *spaces = NULL;  /* Spaces left to fill */
-int *updates = NULL; /* What does this do again? */
+int *length = NULL;  /* Length of each column */
+int *spaces = NULL;  /* Length of gap between streams for each column */
+int *updates = NULL; /* Update speed of each column */
 #ifndef _WIN32
 volatile sig_atomic_t signal_status = 0; /* Indicates a caught signal */
 #endif
@@ -139,27 +139,28 @@ void c_die(char *msg, ...) {
 }
 
 void usage(void) {
-    printf(" Usage: cmatrix -[abBcfhlsmVxk] [-u delay] [-C color] [-t tty] [-M message]\n");
+    printf(" Usage: cmatrix -[abBcfhklLmnorsvx] [-C color] [-M message] [-t tty] [-u delay]\n");
     printf(" -a: Asynchronous scroll\n");
     printf(" -b: Bold characters on\n");
     printf(" -B: All bold characters (overrides -b)\n");
     printf(" -c: Use Japanese characters as seen in the original matrix. Requires appropriate fonts\n");
     printf(" -f: Force the linux $TERM type to be on\n");
-    printf(" -l: Linux mode (uses matrix console font)\n");
-    printf(" -L: Lock mode (can be closed from another terminal)\n");
-    printf(" -o: Use old-style scrolling\n");
     printf(" -h: Print usage and exit\n");
-    printf(" -n: No bold characters (overrides -b and -B, default)\n");
+    printf(" -k: Characters in each stream can randomly change (only without -o)\n");
+    printf(" -l: Use matrix console font (TTY ONLY!)\n");
+    printf(" -L: Lock mode (must be closed from another terminal)\n");
+    printf(" -m: Lambda mode, every character becomes a lambda\n");
+    printf(" -n: No bold characters (overrides -b and -B, default behaviour)\n");
+    printf(" -o: Use old-style scrolling\n");
+    printf(" -r: Rainbow mode\n");
     printf(" -s: \"Screensaver\" mode, exits on first keystroke\n");
+    printf(" -v: Print version information and exit\n");
     printf(" -x: X window mode, use if your xterm is using mtx.pcf\n");
-    printf(" -V: Print version information and exit\n");
-    printf(" -M [message]: Prints your message in the center of the screen. Overrides -L's default message.\n");
-    printf(" -u delay (0 - 10, default 4): Screen update delay\n");
+    printf("\n");
     printf(" -C [color]: Use this color for matrix (default green)\n");
-    printf(" -r: rainbow mode\n");
-    printf(" -m: lambda mode\n");
-    printf(" -k: Characters change while scrolling. (Works without -o opt.)\n");
+    printf(" -M [message]: Prints your message in the center of the screen. Overrides -L's default message.\n");
     printf(" -t [tty]: Set tty to use\n");
+    printf(" -u delay (0 - 9, default 4): Screen update delay\n");
 }
 
 void version(void) {
@@ -204,7 +205,7 @@ void var_init() {
     if (spaces != NULL) {
         free(spaces);
     }
-    spaces = nmalloc(COLS* sizeof(int));
+    spaces = nmalloc(COLS * sizeof(int));
 
     if (updates != NULL) {
         free(updates);
@@ -331,7 +332,7 @@ int main(int argc, char *argv[]) {
 
     /* Many thanks to morph- (morph@jmss.com) for this getopt patch */
     opterr = 0;
-    while ((optchr = getopt(argc, argv, "abBcfhlLnrosmxkVM:u:C:t:")) != EOF) {
+    while ((optchr = getopt(argc, argv, "abBcfhklLmnorsvxC:M:t:u:")) != EOF) {
         switch (optchr) {
         case 's':
             screensaver = 1;
@@ -405,7 +406,7 @@ int main(int argc, char *argv[]) {
         case 'x':
             xwindow = 1;
             break;
-        case 'V':
+        case 'v':
             version();
             exit(0);
         case 'r':

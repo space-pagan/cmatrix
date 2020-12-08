@@ -3,11 +3,11 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(CMatrix LANGUAGES C)
-set(VERSION "2.0")
+set(VERSION "2.1.0")
 
 # These are relative to CMAKE_INSTALL_PREFIX
 # which by default is "/usr/local"
-set(CONSOLE_FONTS_DIRS "share/consolefonts" "lib/kbd/consolefonts")
+set(CONSOLE_FONTS_DIRS "/usr/share/consolefonts" "/usr/lib/kbd/consolefonts" "/usr/share/kbd/consolefonts")
 set(X_FONTS_DIRS "lib/X11/fonts/misc" "X11R6/lib/X11/fonts/misc" "share/fonts/X11/misc")
 
 set(MKFONTDIR "/usr/bin/mkfontdir")
@@ -50,6 +50,7 @@ if	(HAVE_GETOPT_H)
 endif	()
 
 Set(CURSES_NEED_NCURSES TRUE)
+Set(CURSES_NEED_WIDE TRUE)
 find_package(Curses)
 include_directories(${CURSES_INCLUDE_DIR})
 add_definitions(-DHAVE_NCURSES_H)
@@ -61,9 +62,23 @@ target_link_libraries(cmatrix ${CURSES_LIBRARIES})
 install(TARGETS cmatrix DESTINATION bin)
 
 if     (UNIX)
+    find_program(CONSOLECHARS consolechars)
+    find_program(SETFONT setfont)
+    if (EXISTS ${SETFONT})
+        message(STATUS "Found setfont: ${SETFONT}")
+        add_definitions(-DHAVE_SETFONT=${SETFONT})
+    elseif (EXISTS ${CONSOLECHARS})
+        message(STATUS "Found consolechars: ${CONSOLECHARS}")
+        add_definitions(-DHAVE_CONSOLECHARS=${CONSOLECHARS})
+    else ()
+        message(STATUS "No consolechars or setfont found!")
+    endif ()
+
+
+
 	foreach    (CONSOLE_FONTS_DIR ${CONSOLE_FONTS_DIRS})
-		if     (IS_DIRECTORY "${CMAKE_INSTALL_PREFIX}/${CONSOLE_FONTS_DIR}")
-			message(STATUS "Installing matrix console fonts to ${CMAKE_INSTALL_PREFIX}/${CONSOLE_FONTS_DIR}")
+		if     (IS_DIRECTORY "${CONSOLE_FONTS_DIR}")
+			message(STATUS "Installing matrix console fonts to ${CONSOLE_FONTS_DIR}")
 			install(FILES
 				"${CMAKE_SOURCE_DIR}/matrix.fnt"
 				"${CMAKE_SOURCE_DIR}/matrix.psf.gz"
