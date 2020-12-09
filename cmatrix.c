@@ -21,6 +21,9 @@
 
 */
 
+#define POSIX_C_SOURCE 200809L      // enables gnu c macros strdup, strcasecmp, etc...
+#define _XOPEN_SOURCE_EXTENDED 1
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +49,6 @@
 #endif
 
 #ifdef HAVE_NCURSES_H
-#define _XOPEN_SOURCE_EXTENDED 1
 #define NCURSES_WIDECHAR 1
 #include <ncurses.h>
 #else
@@ -383,7 +385,7 @@ int main(int argc, char *argv[]) {
         case 'L':
             lock = 1;
             //if -M was used earlier, don't override it
-            if(msg == ""){
+            if(msg[0] == '\0'){
                 msg = "Computer locked.";
             }
             break;
